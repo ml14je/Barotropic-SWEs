@@ -1,0 +1,14 @@
+setup.py
+Barotropic_SWEs_DG_FEM.egg-info/PKG-INFO
+Barotropic_SWEs_DG_FEM.egg-info/SOURCES.txt
+Barotropic_SWEs_DG_FEM.egg-info/dependency_links.txt
+Barotropic_SWEs_DG_FEM.egg-info/not-zip-safe
+Barotropic_SWEs_DG_FEM.egg-info/requires.txt
+Barotropic_SWEs_DG_FEM.egg-info/top_level.txt
+barotropicSWEs/Barotropic.py
+barotropicSWEs/SWEs.py
+barotropicSWEs/canyon_width_analysis.py
+barotropicSWEs/canyon_width_analysis2.py
+barotropicSWEs/make_canyon_meshes.py
+barotropicSWEs/process_slns.py
+barotropicSWEs/uniform_box_mesh.py
