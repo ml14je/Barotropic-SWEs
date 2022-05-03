@@ -151,9 +151,9 @@ if __name__ == "__main__":
     class pars:
         L_S = 50  # slope width (km)
         L_C = 100  # shelf width (km)
-        W = 5  # (half) canyon width AT SHELF BREAK (km)
-        alpha = 0.5  # 0<alpha<1: canyon occupies this proportion of shelf (ND)
-        beta = 0.2  # 0<beta<1: canyon occupies this proportion of slope (ND)
+        W = 15  # (half) canyon width AT SHELF BREAK (km)
+        alpha = 0.35  # 0<alpha<1: canyon occupies this proportion of shelf (ND)
+        beta = 0.5  # 0<beta<1: canyon occupies this proportion of slope (ND)
         L_CC, L_CS = alpha * L_C, beta * L_S
         L = L_CC + L_CS
         h1 = 200  # shelf depth (m)
@@ -200,6 +200,6 @@ if __name__ == "__main__":
                       color="black", linewidth=0.25)
     ax.view_init(20, 65)
     fig.tight_layout()
-    pt.show()
-    # save_plot(fig, ax, f'Canyon_alpha={pars.alpha}_beta={pars.beta}',
-    #           folder_name="Topographic Profiles")
+    # pt.show()
+    save_plot(fig, ax, f'Canyon_alpha={pars.alpha}_beta={pars.beta}',
+              folder_name="Topographic Profiles")
