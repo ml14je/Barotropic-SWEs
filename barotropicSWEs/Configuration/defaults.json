@@ -1,0 +1,282 @@
+{
+    "General": {
+        "Author": {
+            "type": "str",
+            "doc": "Author",
+            "default": "Joseph Elmes"
+        },
+        "Subject": {
+            "type": "str",
+            "doc": "Topic of Code",
+            "default": "Forced Waves in a Stratified Medium in a Ocean Basin."
+        }
+    },
+    "domain": {
+        "Lx": {
+            "type": "float",
+            "doc": "Domain length in x",
+            "default": 1.0
+        },
+        "Ly": {
+            "type": "float",
+            "doc": "Domain length in y",
+            "default": 1.0
+        },
+        "L_C": {
+            "type": "float",
+            "doc": "Horizontal coastal lengthscale",
+            "default": 1.0
+        },
+        "Nx": {
+            "type": "int",
+            "doc": "number of grid points in x",
+            "default": 128
+        },
+        "Ny": {
+            "type": "int",
+            "doc": "number of grid points in y",
+            "default": 128
+        },
+        "grid_type": {
+            "type": "str",
+            "doc": "Arakawa grid-type",
+            "default": "A",
+            "avail": ["A", "C"]
+        },
+        "horiztonal_grid": {
+            "type": "str",
+            "doc": "Grid-spacing type",
+            "default": "Uniform",
+            "avail": ["Uniform", "Chebyshev"]
+        },
+        "vertical_grid": {
+            "type": "str",
+            "doc": "Grid-spacing type",
+            "default": "Uniform",
+            "avail": ["Uniform", "Chebyshev"]
+        },
+        "method": {
+            "type": "str",
+            "doc": "Numerical approach to solving vertical modes in stratified problem.",
+            "default": "Multi-Layer",
+            "avail": ["Multi-Layer", "Continuous"]
+        },
+        "topography": {
+            "type": "str",
+            "doc": "Topography of domain",
+            "default": "Uniform",
+            "avail": ["Uniform",
+                  "Continental Margin",
+                  "GG07 Slope1",
+                  "GG07 Slope2",
+                  "Ocean Basin"
+                  ]
+        },
+        "BCs": {
+        "type": "str",
+        "doc": "Boundary conditions on baroclinic modes",
+        "default": "Impermeability",
+        "avail": ["Impermeability", "Radiating"]
+        }
+    },
+   "time": {
+        "t_end": {
+            "type": "float",
+            "doc": "integration time",
+            "default": 2.0
+        },
+        "tplot": {
+            "type": "float",
+            "doc": "time intervale between two consecutive frames. The bottleneck of the code is ... the plotting, not the computation!",
+            "default": 0.1
+        },
+        "dt": {
+            "type": "float",
+            "doc": "time step used in the computation. Should be smaller than tplot. Can be anything for initial value problem. Should be small enough for the wake and oscillator cases because of the source terms in the complex amplitude equation",
+            "default": 0.01
+        },
+        "fps": {
+            "type": "float",
+            "doc": "Frame rate of animation",
+            "default": 10
+        },
+        "anim_period": {
+            "type": "float",
+            "doc": "Animation period in seconds",
+            "default": 2
+        },
+        "max_time": {
+            "type": "float",
+            "doc": "Max execution time in hours",
+            "default": 47
+        }
+    },
+    "physics": {
+        "g": {
+            "type": "float",
+            "doc": "Acceleration of gravity",
+            "default": 9.81
+        },
+        "H_D": {
+            "type": "float",
+            "doc": "Deep water depth",
+            "default": 4000.0
+        },
+        "H_C": {
+            "type": "float",
+            "doc": "Shallow water depth",
+            "default": 200.0
+        },
+        "f": {
+            "type": "float",
+            "doc": "Coriolis parameter",
+            "default": 0.0001
+        },
+        "L_R": {
+            "type": "float",
+            "doc": "Rossby deformation radius",
+            "default": 1.0
+        },
+        "C_d": {
+            "type": "float",
+            "doc": "Damping Ratio",
+            "default": 5e-6
+        },
+        "w_f": {
+            "type": "float",
+            "doc": "Wave Frequency",
+            "default": 1.4e-4
+        },
+        "stratification": {
+            "type": "str",
+            "doc": "Stratification of fluid medium",
+            "default": "Data",
+            "avail": ["Uniform",
+                    "Two-Layer",
+                    "Input",
+                    "Constant",
+                    "Data"]
+        },
+        "BVF": {
+            "type": "float",
+            "doc": "Brunt--Vasala frequency in the case of a continuously stratified fluid medium",
+            "default": 0.02
+        }
+    },
+    "plotting": {
+        "longitude": {
+            "type": "float",
+            "doc": "Longitudinal coordinate to obtain data.",
+            "default": 0.0
+        },
+        "latitude": {
+            "type": "float",
+            "doc": "Latitudinal coordinate to obtain data.",
+            "default": 0.0
+        },
+        "cax": {
+            "type": "float",
+            "doc": "colorbar interval: two values list, e.g. [-1., 1.]",
+            "default": [-0.1, 0.1]
+        },
+        "varplot": {
+            "type": "str",
+            "doc": "variable to plot during the animation",
+            "default": "eta",
+            "avail": ["all", "u", "v", "eta", "phi"]
+        },
+        "plotvector": {
+            "type": "str",
+            "doc": "vector field to superimpose during the animation",
+            "default": "None",
+            "avail": ["None", "velocity", "energyflux"]
+        },
+        "vectorscale": {
+            "type": "float",
+            "doc": "scale coefficient to make arrows longer (scale>1) or shorter (scale<1)",
+            "default": 1.0
+        },
+        "figwidth": {
+            "type": "int",
+            "doc": "figure width (in pixels)",
+            "default": 1080
+        },
+        "save_plot": {
+            "type": "bool",
+            "doc": "whether to save or simply show plotted figures",
+            "default" : false
+        },
+        "print_info": {
+            "type": "bool",
+            "doc": "whether to print information related to system parameters",
+            "default" : false
+        },
+        "cmap": {
+            "type": "str",
+            "doc": "Colour map for plots",
+            "default": "RdBu"
+        },
+        "file_name": {
+            "type": "str",
+            "doc": "Filename when saving files",
+            "default": "file"
+        },
+        "folder_dir": {
+            "type": "str",
+            "doc": "Directory when saving files",
+            "default": "."
+        }
+    },
+    "forcing": {
+        "generation": {
+            "type": "str",
+            "doc": "forcing that generates the wave pattern",
+            "avail": ["wake", "initial", "oscillator"],
+            "default": "wake"
+        },
+        "eq_tidal_disp": {
+            "type": "float",
+            "doc": "equilibrium tidal displacement",
+            "default": 1.5
+        }
+    },
+    "response": {
+        "NΩ": {
+            "type" : "int",
+            "doc" : "Number of gridpoints in Ω-space",
+            "default" : 128
+        },
+        "Nλ": {
+            "type": "int",
+            "doc": "Number of gridpoints in λ-space",
+            "default" : 128
+        },
+        "λmax": {
+            "type": "float",
+            "doc": "Maximum-value in λ-space",
+            "default": 5
+        },
+        "Ωmax": {
+            "type" : "float",
+            "doc" : "Maximum-value in Ω-space",
+            "default" : 5
+        }
+    },
+    "DG-FEM": {
+        "order": {
+            "type" : "int",
+            "doc": "order of local test function over element",
+            "default" : 2
+        },
+        "hmin": {
+            "type" : "float",
+            "doc": "minimum size of element edge",
+            "default" : 1e-3
+        },
+        "hmax": {
+            "type" : "float",
+            "doc": "maximum size of element edge",
+            "default" : 1e-2
+        }
+    }   
+}

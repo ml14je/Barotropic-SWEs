@@ -24,4 +24,5 @@ setup(name='Barotropic SWEs DG-FEM',
 #          'ChannelWaves1D', 'ppp', 'oceanmesh'
       ],
       packages=['barotropicSWEs'],
+      package_data={'defaults': ['supporting_files/defaults.json']},
       zip_safe=False)

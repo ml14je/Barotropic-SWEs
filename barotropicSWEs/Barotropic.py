@@ -35,14 +35,16 @@ class solver(object):
         self.param = param
         self.ω = wave_frequency
         self.r = rayleigh_friction
-        
+
         self.X, self.Y = self.fem.x.flatten("F"), self.fem.y.flatten("F")
-        
 
         # Normal matrices:
         self.Nx = diags(self.fem.nx.T.flatten(), format="csr")
         self.Ny = diags(self.fem.ny.T.flatten(), format="csr")
-        self.scheme, self.boundary_conditions = flux_scheme.upper(), boundary_conditions.upper()
+        self.scheme, self.boundary_conditions = (
+            flux_scheme.upper(),
+            boundary_conditions.upper(),
+        )
 
         if self.scheme not in [
             "CENTRAL",
@@ -54,7 +56,12 @@ class solver(object):
         ]:
             raise ValueError("Invalid Flux scheme")
 
-        if self.boundary_conditions not in ["SOLID WALL", "OPEN FLOW", "MOVING WALL", "SPECIFIED"]:
+        if self.boundary_conditions not in [
+            "SOLID WALL",
+            "OPEN FLOW",
+            "MOVING WALL",
+            "SPECIFIED",
+        ]:
             raise ValueError("Invalid Boundary Condition")
 
         else:
@@ -68,7 +75,7 @@ class solver(object):
             elif self.scheme == "PENALTY":
                 self.α, self.β, self.γ, self.θ = 1, 0, 1, 0.5
 
-            elif self.scheme == 'RIEMANN':
+            elif self.scheme == "LAX-FRIEDRICHS":
                 self.α, self.β, self.γ, self.θ = 1, 1, 1, 0.5
 
             else:  # Alternating flux as given in (Shu, 2002) -certainly (Ambati & Bokhove, 2007), or Riemann Flux
@@ -78,32 +85,30 @@ class solver(object):
             self.h_func = np.vectorize(lambda X, Y: 1)
         else:
             self.h_func = h_func
-        
-        self.h = h_func(self.X, self.Y)
+
+        self.h = self.h_func(self.X, self.Y)
 
         if background_flow is None:
             self.background_flow = np.zeros((len(self.X) * 2, 1))
 
         else:
             self.background_flow = np.concatenate(
-                (background_flow[0][:, None], background_flow[1][:, None]),
-                axis=0)
+                (background_flow[0][:, None], background_flow[1][:, None]), axis=0
+            )
 
         self.matrix_setup()
 
-    def timestep(
+    def initial_value_problem(
         self,
-        u0,
-        v0,
-        η0,
-        t_final=1,
+        initial_values,
+        periods=10,
         Nout=None,
         file_name=None,
         method="RK4",
         ω=None,
         φ=0,
         animate=False,
-        N_frames=100,
+        N_frames=0,
     ):
         from ppp.Jacobi import JacobiGQ
         from numpy.linalg import norm
@@ -116,15 +121,18 @@ class solver(object):
 
         from math import ceil
 
-        Nt = ceil((t_final / N_frames) / dt)
-        dt = t_final / (Nt * N_frames)
-
         if Nout is None:
             Nout = self.fem.N
+
         if file_name is None:
             file_name = f"Solutions: {self.scheme}"
-        u, v, η = np.copy(u0), np.copy(v0), np.copy(η0)
+
         ω = self.ω if ω is None else ω
+
+        # Period of potential forcing φ of frequency ω
+        T = 2 * np.pi / ω
+
+        t_final = periods * T
         N = self.fem.Np * self.fem.K
         from scipy.sparse import csr_matrix as sp
         from scipy.sparse import identity, block_diag
@@ -133,11 +141,10 @@ class solver(object):
         I2 = block_diag(2 * [i] + [o])
         assert ω is not None
 
-        # Potential forcing φ of frequency ω
-        T = 2 * np.pi / ω
-        assert not np.all(u0) == 0
+        if φ == 0:
+            φ = np.zeros(len(self.X))
 
-        if np.all(u0) == 0:
+        if np.all(initial_values) == 0:
             F = (
                 lambda t: self.forcing(φ)
                 * np.exp(-1j * ω * t)
@@ -151,8 +158,6 @@ class solver(object):
 
         def rhs(t, y):
             return (self.A - r_(t) * I2) @ y + F(t)
-
-        y_0 = np.concatenate([u, v, η], axis=0)[:, None]
 
         if method in [
             "Forward Euler",
@@ -168,11 +173,10 @@ class solver(object):
             "RK5",
         ]:
             from ppp.Explicit import explicit
-            from math import ceil
 
             timestepping = explicit(
                 rhs,
-                y_0,
+                initial_values,
                 0,
                 t_final,
                 N=ceil(t_final / dt),
@@ -191,7 +195,7 @@ class solver(object):
         ]:
             from ppp.Embedded import embedded
 
-            timestepping = embedded(rhs, y_0, 0, t_final, method=method)
+            timestepping = embedded(rhs, initial_values, 0, t_final, method=method)
 
         else:
             raise ValueError("method argument is not defined.")
@@ -199,10 +203,20 @@ class solver(object):
         self.time = timestepping.t_vals
         sols = timestepping.y_vals[:, :, 0]
 
-        if animate:
-            self.animate_sols(np.copy(sols), file_name=file_name, Nout=Nout)
-
         return timestepping.t_vals, sols
+
+    def eigenvalue_problem(self):
+        from scipy.linalg import eig
+
+        eig_vals, eig_modes = eig(
+            self.A.todense(),
+            # b=-1j*np.eye(self.A.shape[0]),
+            overwrite_a=False,
+            overwrite_b=False,
+            check_finite=False,
+        )
+
+        return 1j * eig_vals, eig_modes
 
     def matrix_setup(self):
         from scipy.sparse import bmat as bsp
@@ -280,24 +294,23 @@ class solver(object):
         self.Un = np.zeros((3 * Nx.shape[0], 1))
 
         if self.boundary_conditions == "SOLID WALL":
-#            if self.rotation and self.scheme not in ['ALTERNATING', 'CENTRAL']:
-                # η+ = η-
-            Ipη3[mapB, vmapB] = Im[mapB, vmapB]
+            #            if self.rotation and self.scheme not in ['ALTERNATING', 'CENTRAL']:
+            # η+ = η-
+            # Ipη3[mapB, vmapB] = Im[mapB, vmapB]
 
-                # u+ = (ny^2 - nx^2) * -u- - 2 * nx * ny * v- (non-dimensional impermeability)
+            # u+ = (ny^2 - nx^2) * -u- - 2 * nx * ny * v- (non-dimensional impermeability)
             Ipu1[mapB, vmapB] = ((Ny @ Ny - Nx @ Nx) @ Im)[mapB, vmapB]
             Ipu2[mapB, vmapB] = -2 * (Nx @ Ny @ Im)[mapB, vmapB]
 
-                # v+ = (nx^2 - ny^2) * -v- - 2 * nx * ny * u- (non-dimensional impermeability)
+            # v+ = (nx^2 - ny^2) * -v- - 2 * nx * ny * u- (non-dimensional impermeability)
             Ipv2[mapB, vmapB] = ((Nx @ Nx - Ny @ Ny) @ Im)[mapB, vmapB]
             Ipv1[mapB, vmapB] = -2 * (Nx @ Ny @ Im)[mapB, vmapB]
 
-  #          else:
-                #Case of Ambati & Bokhove to constrain central flux on domain boundary
-  #              raise ValueError
-  #              # η+ = η-
-  #              Ipη3[mapB, vmapB] = Im[mapB, vmapB]
-
+        #          else:
+        # Case of Ambati & Bokhove to constrain central flux on domain boundary
+        #              raise ValueError
+        #              # η+ = η-
+        #              Ipη3[mapB, vmapB] = Im[mapB, vmapB]
 
         elif self.boundary_conditions == "OPEN FLOW":
             # [[η]]=0 ==> η+ = η-
@@ -310,7 +323,6 @@ class solver(object):
             )
 
         elif self.boundary_conditions == "SPECIFIED":
-
             for bc in self.fem.BCs.keys():
                 m, vm = self.fem.maps[bc], self.fem.vmaps[bc]
                 if "Wall" or "Open" in bc:
@@ -334,7 +346,7 @@ class solver(object):
                     U = Norms @ IO @ block_diag([self.H] * 2) @ self.background_flow
                     Qx = 2 * Nx @ U
                     Qy = 2 * Ny @ U
-                    η_t = -1j * self.ω * sp(U.shape) #zero
+                    η_t = -1j * self.ω * sp(U.shape)  # zero
                     X = bsp([[Qx], [Qy], [η_t]])
                     self.Un += X
 
@@ -358,29 +370,17 @@ class solver(object):
         α, β, γ, θ = self.α, self.β, self.γ, self.θ
         θ = θ * np.ones(Ny.shape[0])
         θ[mapB] = 0.5
-        
+
         h_av = (self.h[vmapP] + self.h[vmapM]) / 2
-        # inds = np.round(h_av, 16) == 0
-        # print(inds)
-        # if len(vmapP[inds]) > 0:
-        #     import matplotlib.pyplot as pt
-        #     pt.plot(self.X[vmapP], h_av, 'kx')
-        #     pt.show()
-        #     print(self.X[vmapP][inds])
-        #     raise ValueError
+
         c = diags(np.sqrt(h_av))
         H_inv = diags(1 / h_av)
 
-        if self.scheme == 'RIEMANN':
-            self.H_inv = diags(1/self.h)
-            c = np.sqrt(self.h)
-            c_p, c_m = c[vmapP], c[vmapM]
-            c_av = 2 * (c_p * c_m) /(c_m + c_p)
-            self.Flux = .5 * 0
+        if self.scheme == "RIEMANN":
             raise ValueError("Riemann Flux not yet implemented")
 
         else:
-            self.Flux = .5 * bsp(
+            self.Flux = 0.5 * bsp(
                 [
                     [
                         -c @ H_inv @ sp((α * (Nx @ Nx) + β * (Ny @ Ny))),
@@ -649,7 +649,7 @@ class solver(object):
         )
 
         frames = []
-#        print(z.shape, self.time.shape)
+        #        print(z.shape, self.time.shape)
         for i, t in enumerate(self.time):
             datum = []
             z = uout
@@ -791,6 +791,7 @@ class solver(object):
         from scipy.sparse import csr_matrix as sp
 
         self.φ = bsp([[sp(φ)] * 3]).T
+
         N = self.fem.Np * self.fem.K
         o = sp((N, N))
         grad = block_diag([self.Dx, self.Dy, o])
@@ -798,7 +799,7 @@ class solver(object):
         # Potential forcing + prescription of boundary conditions
         return grad @ self.φ - self.U_D
 
-    def bvp(
+    def boundary_value_problem(
         self,
         φ,
         rayleigh_friction=None,
@@ -826,31 +827,13 @@ class solver(object):
         A = -self.A - 1j * ω * I + r * I2
         if verbose:
             print("Solving BVP using spsolve")
-            
-        sols = spsolve(A, self.forcing(φ))[None, :]
 
-        # import time
-        # from scipy.sparse.linalg import (bicg, bicgstab, cg, cgs, gmres,
-        #                lgmres, minres, qmr, gcrotmk)
-        # solutions = []
-        # start = time.time()
-        # solutions.append(s)
-        # print(f'{time.time() - start:.2f} s')
-        
-        # for i, method in enumerate([bicg, bicgstab, cg, cgs, gmres,
-        #                lgmres, minres, qmr, gcrotmk]):
-        #     start = time.time()
-        #     solutions.append(method(A, self.forcing(φ))[0].flatten())
-            
-        # # sols1 = spsolve(A, self.forcing(φ))[None, :]
-        # # sols = bicg(A, self.forcing(φ))
-        
-        # print(np.max(abs(solutions[0]-solutions[1])))
+        sols = spsolve(A, self.forcing(φ))[None, :]
 
         if animate:
             if verbose:
                 print("Animating and saving BVP")
-            
+
             sols_t = sols * np.exp(-1j * ω * self.time[:, None])
             self.animate_sols(np.copy(sols_t), file_name=file_name)
 
@@ -1356,6 +1339,18 @@ def plotly_triangular_mesh(
         )
 
         return [mesh, lines]
+
+
+def grid_convert(vals, old_grid, new_grid):
+    from scipy.interpolate import griddata
+
+    new_vals = []
+    for val in vals:
+        val_r = griddata(old_grid, val.real, new_grid, method="cubic")
+        val_i = griddata(old_grid, val.imag, new_grid, method="cubic")
+        new_vals.append((val_r + 1j * val_i)[:, :, 0])
+
+    return new_vals
 
 
 if __name__ == "__main__":

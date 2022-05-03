@@ -1,0 +1,162 @@
+Depth: 200.0 m
+Loading FEM class
+File exists, loading data
+Depth: 295.0 m
+Loading FEM class
+File exists, loading data
+Depth: 390.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 485.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 580.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 675.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 770.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 865.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 960.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1055.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1150.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1245.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1340.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1435.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1530.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1625.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1720.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1815.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 1910.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2005.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2100.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2195.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2290.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2385.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2480.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2575.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2670.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2765.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2860.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 2955.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3050.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3145.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3240.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3335.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3430.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3525.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3620.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3715.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3810.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 3905.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Depth: 4000.0 m
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve

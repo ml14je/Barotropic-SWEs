@@ -1,0 +1,162 @@
+Width: 0.0 km
+Loading FEM class
+File exists, loading data
+Width: 0.5 km
+Loading FEM class
+File exists, loading data
+Width: 1.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 1.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 2.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 2.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 3.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 3.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 4.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 4.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 5.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 5.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 6.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 6.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 7.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 7.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 8.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 8.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 9.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 9.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 10.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 10.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 11.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 11.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 12.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 12.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 13.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 13.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 14.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 14.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 15.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 15.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 16.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 16.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 17.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 17.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 18.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 18.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 19.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 19.5 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
+Width: 20.0 km
+Creating FEM class
+File does not exist, generating data
+Solving BVP using spsolve
