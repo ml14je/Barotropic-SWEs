@@ -62,7 +62,6 @@ def hv(x,pars):
     return temp
 
 class pars:
-    
     s=1        # slope width
     L=.15       # canyon length ON SHELF
     W=0.25      # (half) canyon width AT SHELF BREAK

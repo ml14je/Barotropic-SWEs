@@ -122,7 +122,7 @@ def hv(y, pars):
     )
 
 def coastal_topography(param):
-    class pars:
+    class pars(object):
         L_S = param.L_S  # slope width (km)
         L_C = param.L_C  # shelf width (km)
         W = param.canyon_width * 1e3  # (half) canyon width AT SHELF BREAK (km)
@@ -148,7 +148,7 @@ def coastal_topography(param):
     return h_slope, topography
 
 if __name__ == "__main__":
-    class pars:
+    class pars(object):
         L_S = 50  # slope width (km)
         L_C = 100  # shelf width (km)
         W = 15  # (half) canyon width AT SHELF BREAK (km)
