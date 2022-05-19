@@ -147,19 +147,65 @@ def coastal_topography(param):
         
     return h_slope, topography
 
+
+def plot_parameter_space(pars):
+    from ppp.Plots import plot_setup, save_plot
+    
+    L_levels = [20, 60, 100, 140]
+    H_levels = [400, 1000, 2000, 3000, 3800]
+    
+    def fmt_func(L):
+        return f'{L:.0f} km'
+    
+    def fmt_func2(H):
+        return f'{H:.0f} m'
+
+    alphas = np.linspace(0, 1, 101)
+    betas = np.linspace(0, 1, 101)
+    A, B = np.meshgrid(alphas, betas)
+    
+    fig, ax = plot_setup('$\\alpha$', '$\\beta$', scale=.8)
+    
+    
+    length = A * pars.L_C + B * pars.L_S
+    termination_depth = pars.h1 + (pars.h2 - pars.h1) * phi(B)
+    
+    cs = ax.contour(A, B,
+                    length,
+                    L_levels, colors='b')
+    ax.clabel(cs, cs.levels, inline=True,
+              fmt=fmt_func, fontsize=18)
+    
+    
+    cs = ax.contour(A, B,
+                    termination_depth,
+                    H_levels, colors='r')
+    ax.clabel(cs, cs.levels, inline=True,
+              fmt=fmt_func2, fontsize=18)
+    
+    ax.set_aspect('equal')
+    
+    save_plot(fig, ax, 'Parameterisation',
+              folder_name="Topographic Profiles")
+    
+    
+    
+
 if __name__ == "__main__":
     class pars(object):
         L_S = 50  # slope width (km)
         L_C = 100  # shelf width (km)
-        W = 15  # (half) canyon width AT SHELF BREAK (km)
-        alpha = 0.35  # 0<alpha<1: canyon occupies this proportion of shelf (ND)
-        beta = 0.5  # 0<beta<1: canyon occupies this proportion of slope (ND)
+        W = 20  # (half) canyon width AT SHELF BREAK (km)
+        alpha = 0.98  # 0<alpha<1: canyon occupies this proportion of shelf (ND)
+        beta = 1  # 0<beta<1: canyon occupies this proportion of slope (ND)
         L_CC, L_CS = alpha * L_C, beta * L_S
         L = L_CC + L_CS
         h1 = 200  # shelf depth (m)
         h2 = 4000  # open-ocean depth (m)
         
+    plot_parameter_space(pars)
     
+    pass
 
     nx, ny = 500, 500
     y = np.linspace(0, 200, ny + 1)  # Cross-shore coordinates (km)
@@ -173,9 +219,9 @@ if __name__ == "__main__":
     ax.plot(y, -hss(y, pars), "k", label='Slope')
     ax.plot(y, -hv(y, pars), "r", label='Valley')
     ax.set_ylim([-1.1 * pars.h2, 50])
-    pt.show()
-    # save_plot(fig, ax, f'CrossSection_alpha={pars.alpha}_beta={pars.beta}',
-    #           folder_name="Topographic Profiles", my_loc=1)
+    # pt.show()
+    save_plot(fig, ax, f'CrossSection_alpha={pars.alpha}_beta={pars.beta}',
+              folder_name="Topographic Profiles", my_loc=1)
 
     x = np.linspace(-15, 15, nx + 1)  # Along-shore coordinates (km)
     xa, ya = np.meshgrid(x, y)

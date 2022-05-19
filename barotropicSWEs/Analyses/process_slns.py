@@ -170,7 +170,7 @@ def plot_solutions(
         cbar.ax.tick_params(labelsize=16)
 
         for fig, ax, name, x_pos in zip(
-            [fig_vel, fig_sol], [ax_vel, ax_sol], ["Velocity", "Solution"], [0.7, 0.84]
+            [fig_vel, fig_sol], [ax_vel, ax_sol], ["Velocity", "Solution"], [0.7, 0.89]
         ):
             ax.contour(
                 X,
@@ -191,7 +191,7 @@ def plot_solutions(
             qk = ax.quiverkey(
                 Q,
                 x_pos,
-                0.064,
+                0.05,
                 0.05,
                 r"$5\,\rm{cm/s}$",
                 labelpos="W",
