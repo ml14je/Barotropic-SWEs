@@ -109,10 +109,11 @@ def main(
                 h_func = lambda x, y: HD * canyon_func1(x, y)
 
         dem = DEM(h_func, bbox=extent.bbox, resolution=h_min)  # creates a DEM object for own function, h_func
-        from barotropicSWEs.Configuration.topography import grad_function
-        
+
         smoothing = False
-        print("creating shoreline")
+        if verbose:
+            print("creating shoreline")
+
         if len(edgefuncs) == 1 and edgefuncs[0] == "UNIFORM":
             shore = Shoreline(fname, extent_.bbox, h_max,
                               smooth_shoreline=smoothing)

@@ -112,7 +112,7 @@ alpha={param.alpha:.3f}_beta={param.beta:.3f}"
         folder=mesh_dir,
         file_name=mesh_name,
         plot_mesh=plot_mesh,
-        verbose=True,
+        verbose=verbose,
         plot_sdf=plot_sdf,
         plot_boundary=False,
         save_mesh=save_mesh,
@@ -128,7 +128,8 @@ alpha={param.alpha:.3f}_beta={param.beta:.3f}"
 
 def main(bbox, param, h_min, h_max, coastal_lengthscale=.03,
          coastal_shelf_width=.02, canyon_intrusion=.015,
-     canyon_widths=[0, 1e-3, 5e-3, 1e-2], mesh_name="", h_func=None):
+         canyon_widths=[0, 1e-3, 5e-3, 1e-2], mesh_name="", h_func=None,
+         verbose=True):
     λ, LC = coastal_lengthscale, coastal_shelf_width
     ΔL = canyon_intrusion
     name_ = mesh_name
@@ -146,7 +147,7 @@ def main(bbox, param, h_min, h_max, coastal_lengthscale=.03,
             coastal_lengthscale=λ,
             coastal_shelf_width=LC,
             canyon_intrusion=ΔL,
-            verbose=True,
+            verbose=verbose,
         )
 
 if __name__ == "__main__":

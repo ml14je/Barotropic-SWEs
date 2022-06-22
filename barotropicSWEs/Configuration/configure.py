@@ -118,6 +118,12 @@ def main():
         type=float,
         default=1035.2,
         help='Mean density used as a reference for barotropic.')
+    
+    parser.add_argument(
+        '--nbr_workers',
+        type=int,
+        default=1,
+        help='Number of workers for parallel processing.')
 
     args = parser.parse_args()
     
@@ -196,4 +202,5 @@ def main():
     param.order = args.order
     param.hmin, param.hmax = args.hmin, args.hmax
     param.parameter = args.parameter
+    param.nbr_workers = args.nbr_workers
     return param

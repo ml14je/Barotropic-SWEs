@@ -475,7 +475,7 @@ def step_profile(param, λ=.2):
 
             return hvals
 
-    kelvin = Kelvin_Asymptotics(param, h, 1.5, order=2, λ=λ)
+    kelvin = Kelvin_Asymptotics(param, h, 1.5, order=1, λ=λ)
     print(kelvin.compare(plot=True, error=False, λ=λ))
 
 def linear_profile(param, λ=.2):
@@ -494,7 +494,7 @@ def tanh_profile(param, λ=.2):
     def h(y):
         return H0 + ΔH * np.tanh(4*(y-λC-.5*λS)/λS) #Slope profile (Teeluck, 2013)
 
-    kelvin = Kelvin_Asymptotics(param, h, 1.5, order=2, λ=λ)
+    kelvin = Kelvin_Asymptotics(param, h, 1.5, order=1, λ=λ)
     print(kelvin.compare(plot=True, error=True, λ=λ))
 
 def GG07_profile(param, λ):

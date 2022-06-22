@@ -332,6 +332,7 @@ def kelvin_solver(
     forcing_alongshore_wavenumber=None,
     foldername="Kelvin Flow",
     filename="",
+    save=False,
 ):  # non-dimensional forcing frequency):
     import pickle
     from ppp.File_Management import file_exist, dir_assurer
@@ -388,33 +389,35 @@ wave frequency"
             kelvin.ω_exact,
             kelvin.k_exact,
         )  # forcing frequency to be that of ω_PKW
-
-        with open(f"{foldername}/{filename}", "wb") as f:
-            pickle.dump(
-                {
-                    "u": u,
-                    "v": v,
-                    "η": η,
-                    "y": y,
-                    "ω": kelvin.ω_exact,
-                    "k": kelvin.k_exact,
-                },
-                f,
-            )
+        
+        if save:
+            with open(f"{foldername}/{filename}", "wb") as f:
+                pickle.dump(
+                    {
+                        "u": u,
+                        "v": v,
+                        "η": η,
+                        "y": y,
+                        "ω": kelvin.ω_exact,
+                        "k": kelvin.k_exact,
+                    },
+                    f,
+                )
 
     else:
         with open(f"{foldername}/{filename}", "rb") as f:
             kelvin_dict = pickle.load(f)
-            u, v, η, y = (
-                kelvin_dict["u"],
-                kelvin_dict["v"],
-                kelvin_dict["η"],
-                kelvin_dict["y"],
-            )
-            ω, k = (
-                kelvin_dict["ω"],
-                kelvin_dict["k"],
-            )  # forcing frequency to be that of ω_PKW
+
+        u, v, η, y = (
+            kelvin_dict["u"],
+            kelvin_dict["v"],
+            kelvin_dict["η"],
+            kelvin_dict["y"],
+        )
+        ω, k = (
+            kelvin_dict["ω"],
+            kelvin_dict["k"],
+        )  # forcing frequency to be that of ω_PKW
 
     from scipy.interpolate import interp1d
 
