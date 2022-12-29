@@ -3,5 +3,8 @@
 *.png
 *.o*
 *.e*
-barotropicSWEs/Analyses/Model\ B/Barotropic\ FEM\ Objects
-barotropicSWEs/Analyses/Model\ B/Parameter\ Sweeps
+*.cpg
+barotropicSWEs/Analysis/Model\ B/Barotropic\ FEM\ Objects
+barotropicSWEs/Analysis/Model\ B/Parameter\ Sweeps
+barotropicSWEs/Analysis/Model\ B/Meshes
+barotropicSWEs/Analysis/Model\ A
