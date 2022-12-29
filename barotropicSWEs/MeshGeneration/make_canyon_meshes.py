@@ -25,7 +25,7 @@ def mesh_generator(
     plot_edgefunc=False,
     max_iter=50,
     save_mesh=True,
-    model="A",
+    model="B",
     verbose=True,
 ):
     """
