@@ -1,1 +1,1 @@
-__all__ = ["Configuration", "Tests", "MeshGeneration", "Kelvin", "Analyses"]
+__all__ = ["Configuration", "Tests", "MeshGeneration", "Kelvin", "Analysis"]
