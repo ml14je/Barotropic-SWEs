@@ -639,7 +639,7 @@ _flux={numerical_flux}_order={order}"
             param.canyon_depth = param.H_D - (param.H_D - param.H_C) * np.cos(beta * np.pi/2)**2
             param.alpha, param.beta = alpha, beta
             save_all = alpha in alpha_save and beta in beta_save
-            print(f'alpha: {alpha:.3f}, beta: {beta:.3f}, save: {save_all}', flush=True)
+            # print(f'alpha: {alpha:.3f}, beta: {beta:.3f}, save: {save_all}', flush=True)
             
             if goal.upper() in ['SOLUTIONS', 'PERTURBATIONS']:
                 main(
@@ -750,147 +750,168 @@ _flux={numerical_flux}_order={order}"
                       fmt=fmt_func2, fontsize=18)
 
         # ### Pressure ###
-        # key2 = 'p'
-        # v_mins = [9.45, 9.45, 9.85]
-        # v_maxs = [9.5, 9.5, 10.05]
+        key2 = 'p'
+        v_mins = [9.45, 9.45, 9.85]
+        v_maxs = [9.5, 9.5, 10.05]
         
         import matplotlib.ticker as tick
+        from ppp.Plots import add_colorbar
 
-        # for ind, key in enumerate(['solution']):#'change of magnitude',
-        #                             # 'magnitude of change', ]):
-        #     for i, norm in enumerate(['L1', 'L2', 'Linf']):
-        #         fig, ax = plot_setup('$\\alpha$', '$\\beta$', scale=.7)#,
-        #                               # title="Pressure (Pa)")
-                
-        #         A, B = np.meshgrid(alpha_values, beta_values)
-        #         vals = np.array([dictionaries[(alpha, beta)][key][key2][norm] * 1e-3 \
-        #                           for alpha, beta in \
-        #                               zip(A[1:].flatten(), B[1:].flatten())]).reshape(A[1:].shape)
-        #         vals_slope = np.array([dictionaries['slope'][key][key2][norm] * 1e-3 \
-        #                           for alpha in alpha_values])[None, :]
-        #         vals = np.concatenate([vals_slope, vals], axis=0) 
-        #         c = ax.imshow(vals, aspect='equal', origin='lower',
-        #                       extent=[alpha_values[0], alpha_values[-1],
-        #                               beta_values[0], beta_values[-1]],
-        #                       cmap='YlGnBu', vmin=v_mins[i], vmax=v_maxs[i])
-        #         cbar = fig.colorbar(c, ax=ax,
-        #                             format=tick.FormatStrFormatter('%.2f'))
-        #         cbar.ax.tick_params(labelsize=16)
-        #         # plot_contours(ax)
-        #         # ax.plot([.35], [.5], 'x', color='red', ms=10, mew=3, ls='none')
-        #         # ax.plot(np.tile(alpha_save, len(beta_save)),
-        #         #         np.repeat(beta_save, len(alpha_save)),
-        #         #         'rx')
-        #         # pt.show()
-            
-        #         save_plot(fig, ax, f"Pressure_CanyonWidth={canyon_width:.1f}km_{norm}",
-        #                   my_loc=2,
-        #                   folder_name=f"Parameter Sweeps/Figures/Parameters/{key.replace(' ', '_')}")
-                
-
-        # # Horizontal Velocity ###
-        # labels = ['Along-shore', 'Cross-shore']
-        # v_mins = [(2.9, 2), (3.24, 2.5), (4.5, 3.75)]
-        # v_maxs = [(3.33, 2.62), (3.5, 3.4), (6.6, 10.1)]
-        
-        # for key in ['solution']:#, 'change of magnitude', 'magnitude of change']:
-        #     for i, norm in enumerate(['L1', 'L2', 'Linf']):
-        #         for ind, key2 in enumerate(['u', 'v']):
-        #             fig, ax = plot_setup('$\\alpha$', '$\\beta$', scale=.7)#,
-        #                                   # title=f"{labels[ind]} Speed (cm/s)")
-        #             A, B = np.meshgrid(alpha_values, beta_values)
-        #             vals = np.array([dictionaries[(alpha, beta)][key][key2][norm] \
-        #                               for alpha, beta in \
-        #                                   zip(A[1:].flatten(), B[1:].flatten())]).reshape(A[1:].shape)
-        #             vals_slope = np.array([dictionaries['slope'][key][key2][norm] \
-        #                               for alpha in alpha_values])[None, :]
-        #             vals = np.concatenate([vals_slope, vals], axis=0) 
-                        
-        #             c = ax.imshow(vals, aspect='equal', origin='lower',
-        #                           extent=[alpha_values[0], alpha_values[-1],
-        #                                   beta_values[0], beta_values[-1]],
-        #                           cmap='YlGnBu',
-        #                           vmin=v_mins[i][ind], vmax=v_maxs[i][ind])
-        #             cbar = fig.colorbar(c, ax=ax,
-        #                                 format=tick.FormatStrFormatter('%.2f'))
-        #             cbar.ax.tick_params(labelsize=16)
-        #             # plot_contours(ax)
-        #             # ax.plot([.35], [.5], 'x', color='red', ms=10, mew=3, ls='none')
-        #             # ax.plot(np.tile(alpha_save, len(beta_save)),
-        #             #         np.repeat(beta_save, len(alpha_save)),
-        #             #         'rx')
-        #             # pt.show()
-                
-        #             save_plot(fig, ax, f"{labels[ind]}Velocity_CanyonWidth={canyon_width:.1f}km_{norm}",
-        #                       my_loc=2,
-        #                       folder_name=f"Parameter Sweeps/Figures/Parameters/{key.replace(' ', '_')}")
-
-        # Bathymetric Gradient ###
-        labels = ['Along-shore', 'Cross-shore', 'Absolute']
-        v_mins = [0, 0]
-        v_maxs = [0.1, 2]
-
-        for ind, key2 in enumerate(['h_x', 'grad_h']):
-            for i, norm in enumerate(['L1', 'Linf']):
+        for ind, key in enumerate(['solution']):#'change of magnitude',
+                                    # 'magnitude of change', ]):
+            for i, norm in enumerate(['L1', 'L2', 'Linf']):
                 fig, ax = plot_setup('$\\alpha$', '$\\beta$', scale=.7)#,
-                                      # title="Bathymetric Gradient")
-                print(alpha_values, beta_values)
+                                      # title="Pressure (Pa)")
+                
                 A, B = np.meshgrid(alpha_values, beta_values)
-                vals = np.array([dictionaries[(alpha, beta)]['solution'][key2][norm] \
+                vals = np.array([dictionaries[(alpha, beta)][key][key2][norm] * 1e-3 \
                                   for alpha, beta in \
                                       zip(A[1:].flatten(), B[1:].flatten())]).reshape(A[1:].shape)
-                # vals_slope = np.array([dictionaries['slope']['solution'][key2]['Linf'] \
-                #                   for alpha in alpha_values])[None, :]
-                # vals = np.concatenate([vals_slope, vals], axis=0)
-                c = ax.imshow(vals, aspect='equal', origin='lower',
+                vals_slope = np.array([dictionaries['slope'][key][key2][norm] * 1e-3 \
+                                  for alpha in alpha_values])[None, :]
+                vals = np.concatenate([vals_slope, vals], axis=0) 
+                c = ax.contourf(vals, origin='lower',
                               extent=[alpha_values[0], alpha_values[-1],
                                       beta_values[0], beta_values[-1]],
-                              cmap='YlGnBu', vmin=v_mins[i], vmax=v_maxs[i])
-                cbar = fig.colorbar(c, ax=ax)
+                              cmap='inferno_r',
+                              levels=np.linspace(v_mins[i], v_maxs[i], 21),
+                              extend='both'
+                              )
+                ax.set_aspect('equal')
+                cbar = add_colorbar(c,
+                                    format=tick.FormatStrFormatter('%.2f'))
+                
+                cbar.ax.set_ylabel('Pressure ($\\rm{kPa}$)', rotation=270,
+                        fontsize=16, labelpad=20)
                 cbar.ax.tick_params(labelsize=16)
                 # plot_contours(ax)
                 # ax.plot([.35], [.5], 'x', color='red', ms=10, mew=3, ls='none')
                 # ax.plot(np.tile(alpha_save, len(beta_save)),
                 #         np.repeat(beta_save, len(alpha_save)),
                 #         'rx')
-                pt.show()
-                # save_plot(fig, ax, f"BathymetricGradient_{labels[ind]}_CanyonWidth={canyon_width:.1f}km_{norm}",
-                #           my_loc=2,
-                #           folder_name="Parameter Sweeps/Figures/Parameters/solution")
+                # pt.show()
+            
+                save_plot(fig, ax, f"Pressure_CanyonWidth={canyon_width:.1f}km_{norm}",
+                          my_loc=2,
+                          folder_name=f"Parameter Sweeps/Figures/Parameters/{key.replace(' ', '_')}")
+                
+
+        # Horizontal Velocity ###
+        labels = ['Along-shore', 'Cross-shore']
+        v_mins = [(2.9, 2), (3.24, 2.5), (4.5, 3.75)]
+        v_maxs = [(3.33, 2.62), (3.5, 3.4), (6.6, 10.1)]
+        
+        for key in ['solution']:#, 'change of magnitude', 'magnitude of change']:
+            for i, norm in enumerate(['L1', 'L2', 'Linf']):
+                for ind, key2 in enumerate(['u', 'v']):
+                    fig, ax = plot_setup('$\\alpha$', '$\\beta$', scale=.7)#,
+                                          # title=f"{labels[ind]} Speed (cm/s)")
+                    A, B = np.meshgrid(alpha_values, beta_values)
+                    vals = np.array([dictionaries[(alpha, beta)][key][key2][norm] \
+                                      for alpha, beta in \
+                                          zip(A[1:].flatten(), B[1:].flatten())]).reshape(A[1:].shape)
+                    vals_slope = np.array([dictionaries['slope'][key][key2][norm] \
+                                      for alpha in alpha_values])[None, :]
+                    vals = np.concatenate([vals_slope, vals], axis=0)
+                    c = ax.contourf(vals, origin='lower',
+                                  extent=[alpha_values[0], alpha_values[-1],
+                                          beta_values[0], beta_values[-1]],
+                                  cmap='inferno_r',
+                                  levels=np.linspace(v_mins[i][ind],v_maxs[i][ind], 21),
+                                  extend='both'
+                                  )
+                    ax.set_aspect('equal')
+                    cbar = add_colorbar(c, ax=ax,
+                                        format=tick.FormatStrFormatter('%.2f'))
+                    cbar.ax.set_ylabel(f'{labels[ind]} velocity ($\\rm{{cm/s}}$)', rotation=270,
+                            fontsize=16, labelpad=20)
+                    cbar.ax.tick_params(labelsize=16)
+                    # plot_contours(ax)
+                    # ax.plot([.35], [.5], 'x', color='red', ms=10, mew=3, ls='none')
+                    # ax.plot(np.tile(alpha_save, len(beta_save)),
+                    #         np.repeat(beta_save, len(alpha_save)),
+                    #         'rx')
+                    # pt.show()
+                
+                    save_plot(fig, ax, f"{labels[ind]}Velocity_CanyonWidth={canyon_width:.1f}km_{norm}",
+                              my_loc=2,
+                              folder_name=f"Parameter Sweeps/Figures/Parameters/{key.replace(' ', '_')}")
+
+        # # Bathymetric Gradient ###
+        # labels = ['Along-shore', 'Cross-shore', 'Absolute']
+        # v_mins = [0, 0]
+        # v_maxs = [0.1, 2]
+
+        # for ind, key2 in enumerate(['h_x', 'grad_h']):
+        #     for i, norm in enumerate(['L1', 'Linf']):
+        #         fig, ax = plot_setup('$\\alpha$', '$\\beta$', scale=.7)#,
+        #                               # title="Bathymetric Gradient")
+        #         print(alpha_values, beta_values)
+        #         A, B = np.meshgrid(alpha_values, beta_values)
+        #         vals = np.array([dictionaries[(alpha, beta)]['solution'][key2][norm] \
+        #                           for alpha, beta in \
+        #                               zip(A[1:].flatten(), B[1:].flatten())]).reshape(A[1:].shape)
+        #         vals_slope = np.array([dictionaries['slope']['solution'][key2]['Linf'] \
+        #                           for alpha in alpha_values])[None, :]
+        #         vals = np.concatenate([vals_slope, vals], axis=0)
+        #         c = ax.contourf(vals, aspect='equal', origin='lower',
+        #                       extent=[alpha_values[0], alpha_values[-1],
+        #                               beta_values[0], beta_values[-1]],
+        #                       cmap='inferno_r',
+        #                       levels=np.linspace(v_mins[i], v_maxs[i], 21)
+        #                       )
+        #         cbar = add_colorbar(c, ax=ax)
+        #         cbar.ax.tick_params(labelsize=16)
+        #         # plot_contours(ax)
+        #         # ax.plot([.35], [.5], 'x', color='red', ms=10, mew=3, ls='none')
+        #         # ax.plot(np.tile(alpha_save, len(beta_save)),
+        #         #         np.repeat(beta_save, len(alpha_save)),
+        #         #         'rx')
+        #         pt.show()
+        #         # save_plot(fig, ax, f"BathymetricGradient_{labels[ind]}_CanyonWidth={canyon_width:.1f}km_{norm}",
+        #         #           my_loc=2,
+        #         #           folder_name="Parameter Sweeps/Figures/Parameters/solution")
     
-        # ### Vertical Velocity ###
-        # labels = ['Total'] # 'Along-shore', 'Cross-shore', 
-        # v_mins = [0.02, 0.02, 0]
-        # v_maxs = [0.165, 0.165, 6.5]
-        # for key in ['solution']: #'change of magnitude', 'magnitude of change', 
-        #     for ind, key2 in enumerate(['w']): #'w_x', 'w_y', 
-        #         for i, norm in enumerate(['L1', 'L2', 'Linf']):
-        #             fig, ax = plot_setup('$\\alpha$', '$\\beta$', scale=.7)#,
-        #                                   # title=f"{labels[ind]} Vertical Speed (cm/s)")
-        #             A, B = np.meshgrid(alpha_values, beta_values)
-        #             vals = np.array([dictionaries[(alpha, beta)][key][key2][norm] \
-        #                               for alpha, beta in \
-        #                                   zip(A[1:].flatten(), B[1:].flatten())]).reshape(A[1:].shape)
-        #             vals_slope = np.array([dictionaries['slope'][key][key2][norm] \
-        #                               for alpha in alpha_values])[None, :]
-        #             vals = np.concatenate([vals_slope, vals], axis=0)                        
-                        
-        #             c = ax.imshow(vals, aspect='equal', origin='lower',
-        #                           extent=[alpha_values[0], alpha_values[-1],
-        #                                   beta_values[0], beta_values[-1]],
-        #                           cmap='YlGnBu', vmin=v_mins[i], vmax=v_maxs[i])#, vmin=1, vmax=8)
-        #             cbar = fig.colorbar(c, ax=ax)
-        #             cbar.ax.tick_params(labelsize=16)
-        #             # plot_contours(ax)
-        #             # ax.plot([.35], [.5], 'x', color='red', ms=10, mew=3, ls='none')
-        #             # ax.plot(np.tile(alpha_save, len(beta_save)),
-        #             #         np.repeat(beta_save, len(alpha_save)),
-        #             #         'rx')
-        #             # pt.show()
+        ### Vertical Velocity ###
+        labels = ['Total'] # 'Along-shore', 'Cross-shore', 
+        v_mins = [0.02, 0.02, 0]
+        v_maxs = [0.165, 0.4, 6.5]
+        for key in ['solution']: #'change of magnitude', 'magnitude of change', 
+            for ind, key2 in enumerate(['w']): #'w_x', 'w_y', 
+                for i, norm in enumerate(['L1', 'L2', 'Linf']):
+                    fig, ax = plot_setup('$\\alpha$', '$\\beta$', scale=.7)#,
+                                          # title=f"{labels[ind]} Vertical Speed (cm/s)")
+                    A, B = np.meshgrid(alpha_values, beta_values)
+                    vals = np.array([dictionaries[(alpha, beta)][key][key2][norm] \
+                                      for alpha, beta in \
+                                          zip(A[1:].flatten(), B[1:].flatten())]).reshape(A[1:].shape)
+                    vals_slope = np.array([dictionaries['slope'][key][key2][norm] \
+                                      for alpha in alpha_values])[None, :]
+                    vals = np.concatenate([vals_slope, vals], axis=0)
+                    c = ax.contourf(vals, origin='lower',
+                                  extent=[alpha_values[0], alpha_values[-1],
+                                          beta_values[0], beta_values[-1]],
+                                  cmap='inferno_r',
+                                  levels=np.linspace(v_mins[i], v_maxs[i], 21),
+                                  extend='both'
+                                  ) #vmin=v=_mins[i], vmax=v_maxs[i])#, vmin=1, vmax=8)
+                    ax.set_aspect('equal')
+                    cbar = add_colorbar(c,
+                                        format=tick.FormatStrFormatter('%.2f'))
+                    cbar.ax.tick_params(labelsize=16)
                     
-        #             save_plot(fig, ax, f"{labels[ind]}_VerticalVelocity_CanyonWidth={canyon_width:.1f}km_{norm}",
-        #                       my_loc=2,
-        #                       folder_name=f"Parameter Sweeps/Figures/Parameters/{key.replace(' ', '_')}")
+                    cbar.ax.set_ylabel('Vertical velocity ($\\rm{cm/s}$)', rotation=270,
+                            fontsize=16, labelpad=20)
+                    # plot_contours(ax)
+                    # ax.plot([.35], [.5], 'x', color='red', ms=10, mew=3, ls='none')
+                    # ax.plot(np.tile(alpha_save, len(beta_save)),
+                    #         np.repeat(beta_save, len(alpha_save)),
+                    #         'rx')
+                    # pt.show()
+                    
+                    save_plot(fig, ax, f"{labels[ind]}_VerticalVelocity_CanyonWidth={canyon_width:.1f}km_{norm}",
+                              my_loc=2,
+                              folder_name=f"Parameter Sweeps/Figures/Parameters/{key.replace(' ', '_')}")
 
 if __name__ == "__main__":
     from barotropicSWEs.Configuration import configure

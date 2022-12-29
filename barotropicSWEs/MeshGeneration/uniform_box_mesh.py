@@ -166,7 +166,7 @@ def main(
         # Enforce gradation - becomes very unnatural otherwise!
         # Becomes distorted if dx != dy in grid
         edge_length = enforce_mesh_gradation(edge_length,
-                                              gradation=mesh_gradation)
+                                             gradation=mesh_gradation)
 
         if plot_sdf:  # plot signed distance function
             from ppp.Plots import plot_setup, save_plot
@@ -195,7 +195,7 @@ def main(
             import matplotlib.pyplot as pt
 
             N = 1001
-            X, Y = np.linspace(bbox[0], bbox[1], N), np.linspace(bbox[2], bbox[3], N)
+            x, y = np.linspace(bbox[0], bbox[1], N), np.linspace(bbox[2], bbox[3], N)
             X, Y = np.meshgrid(X, Y)
             X, Y = X.flatten("F"), Y.flatten("F")
             P = np.array([X, Y]).T
