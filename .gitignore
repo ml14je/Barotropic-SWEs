@@ -3,3 +3,5 @@
 *.png
 *.o*
 *.e*
+barotropicSWEs/Analyses/Model\ B/Barotropic\ FEM\ Objects
+barotropicSWEs/Analyses/Model\ B/Parameter\ Sweeps
